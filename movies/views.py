@@ -70,4 +70,6 @@ def search_bar(request):
     if request.method == 'POST':
         searched = request.POST['searched']
         movie = Movie.objects.filter(title__contains=searched)
-        return render(request, 'pages/category_filter.html', {'movies': movie, 'searched': searched})
+        return render(request, 'pages/search_result.html', {'movies': movie, 'searched': searched})
+    else:
+        return render(request, 'pages/search_result.html')
