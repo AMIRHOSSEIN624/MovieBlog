@@ -64,3 +64,10 @@ def comment_dislike(request, pk):
 def category_filter(request, pk):
     movie = Movie.objects.filter(genre=pk)
     return render(request, 'pages/category_filter.html', {'movies': movie})
+
+
+def search_bar(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        movie = Movie.objects.filter(title__contains=searched)
+        return render(request, 'pages/category_filter.html', {'movies': movie, 'searched': searched})
