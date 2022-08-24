@@ -36,11 +36,7 @@ def detail_page(request, pk):
 def comment_like(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
 
-    if comment.like.filter(id=request.user.id).exists():
-        comment.like.add(request.user)
-        comment.dislike.remove(request.user)
-    else:
-
+    if not comment.like.filter(id=request.user.id).exists():
         comment.like.add(request.user)
         comment.dislike.remove(request.user)
 
@@ -50,11 +46,7 @@ def comment_like(request, pk):
 def comment_dislike(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
 
-    if comment.dislike.filter(id=request.user.id).exists():
-        comment.dislike.add(request.user)
-        comment.like.remove(request.user)
-    else:
-
+    if not comment.dislike.filter(id=request.user.id).exists():
         comment.dislike.add(request.user)
         comment.like.remove(request.user)
 
@@ -69,7 +61,7 @@ def category_filter(request, pk):
 def search_bar(request):
     if request.method == 'POST':
         searched = request.POST['searched']
-        movie = Movie.objects.filter(title__contains=searched)
+        movie = Movie.objects.filter(title__icontains=searched)
         return render(request, 'pages/search_result.html', {'movies': movie, 'searched': searched})
     else:
         return render(request, 'pages/search_result.html')
